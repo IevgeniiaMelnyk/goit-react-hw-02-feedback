@@ -5,7 +5,6 @@ import StatisticsCount from 'modules/StatisticsCount/StatisticsCount';
 import Notification from 'shared/components/Notification/Notification';
 
 const statisticsOptions = ['good', 'neutral', 'bad'];
-
 class Statistics extends Component {
   state = {
     good: 0,
@@ -41,22 +40,6 @@ class Statistics extends Component {
     const total = this.calcTotal();
     const percent = this.calcPercent('good');
 
-    if (!total) {
-      return (
-        <>
-          <Section secondTitle="Please leave feedback">
-            <FeedbackVariants
-              statisticsOptions={statisticsOptions}
-              liveFeedback={this.liveFeedback}
-            />
-          </Section>
-          <Section>
-            <Notification message="There is no feedback..." />
-          </Section>
-        </>
-      );
-    }
-
     return (
       <>
         <Section secondTitle="Please leave feedback">
@@ -66,13 +49,17 @@ class Statistics extends Component {
           />
         </Section>
         <Section secondTitle="Statistics">
-          <StatisticsCount
-            good={this.state.good}
-            neutral={this.state.neutral}
-            bad={this.state.bad}
-            total={total}
-            percent={percent}
-          />
+          {!total ? (
+            <Notification message="There is no feedback..." />
+          ) : (
+            <StatisticsCount
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
+              total={total}
+              percent={percent}
+            />
+          )}
         </Section>
       </>
     );
